@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 import api from '../../services/api';
 import { Context } from '../../Context/AuthContext';
 import Table from 'react-bootstrap/Table';
-import './category.css'
+import './Products.css'
 import { confirmAlert } from 'react-confirm-alert';
 import { useHistory } from 'react-router-dom';
 
 import { Nav, Navbar, Container, Button, Form } from 'react-bootstrap';
 
-export const ListaCategories = () => {
+export const ListaProducts = () => {
 
     const history = useHistory();
 
@@ -24,28 +24,28 @@ export const ListaCategories = () => {
         mensagem:''
     })
 
-    const confirmDelete = (categories) => {
+    const confirmDelete = (products) => {
         confirmAlert({
           title: "CAUTION !!!!",
           message:
             "Are you absolutely sure you want to delete section " +
-            categories.id +
+            products.id +
             "?",
           buttons: [
             {
               label: "Yes",
-              onClick: () => handleDelete(categories.id)
+              onClick: () => handleDelete(products.id)
             },
             {
               label: "No",
-              onClick: () => history.push("/category")
+              onClick: () => history.push("/products")
             }
           ]
         });
       };
 
-    const handleDelete = async (idCategories) => {
-        console.log(idCategories);
+    const handleDelete = async (idProducts) => {
+        console.log(idProducts);
 
         const valueToken = localStorage.getItem('token');
         const headers = {
@@ -54,7 +54,7 @@ export const ListaCategories = () => {
             }
         }
 
-        await api.delete("/categories/delete/"+idCategories, headers)
+        await api.delete("/products/delete/"+idProducts, headers)
         .then( (response) => {
             setStatus({
                 type: 'sucess',
@@ -76,7 +76,7 @@ export const ListaCategories = () => {
         })
     }
 
-    const getCategories = async (page) => {
+    const getProducts = async (page) => {
 
         if( page === undefined ) {
             page = 1
@@ -90,9 +90,9 @@ export const ListaCategories = () => {
             }
         }
 
-        await api.get("/categories/all/pages/" + page, headers)
+        await api.get("/products/all/pages/" + page, headers)
             .then( (response) => {
-                setData(response.data.categories);
+                setData(response.data.products);
                 setLastPage(response.data.lastPage);
                 setStatus({loading: false})
             }).catch( (err) => {
@@ -111,7 +111,7 @@ export const ListaCategories = () => {
     }
 
     useEffect( () => {
-        getCategories();
+        getProducts();
     }, [])
 
     return(
@@ -130,10 +130,10 @@ export const ListaCategories = () => {
               </Container>
             </Navbar>
             
-            <h1 className="userCenter">Categorias</h1>
+            <h1 className="userCenter">Produtos</h1>
 
             <div className="buttonDiv">
-                <Button className="buttonNew" variant="outline-success" href="/category/novo">Nova Categoria</Button>{' '}
+                <Button className="buttonNew" variant="outline-success" href="/products/novo">Nova Produto</Button>{' '}
             </div>
             <div className="table">
                 <Table striped bordered hover>
@@ -142,18 +142,24 @@ export const ListaCategories = () => {
                         <th>#</th>
                         <th>Nome</th>
                         <th>Description</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>CategorieId</th>
                     </tr>
                     {(!status.loading &&
-                    data.map(categories => (
-                        <tr key={categories.id}>
-                            <td>{categories.id}</td>
-                            <td>{categories.name}</td>
-                            <td>{categories.description}</td>
+                    data.map(products => (
+                        <tr key={products.id}>
+                            <td>{products.id}</td>
+                            <td>{products.name}</td>
+                            <td>{products.description}</td>
+                            <td>{products.quantity}</td>
+                            <td>{products.price}</td>
+                            <td>{products.categorieId}</td>
                             <td className="spaceFlex">
                             <Button className="noLink" variant="outline-warning">
-                                <Link className="onLink" to={"/category/editar/"+categories.id}>Editar</Link>
+                                <Link className="onLink" to={"/category/editar/"+products.id}>Editar</Link>
                             </Button>
-                            <Button variant="outline-danger" onClick={() => confirmDelete(categories)}>
+                            <Button variant="outline-danger" onClick={() => confirmDelete(products)}>
                                 Excluir
                             </Button>
                             </td>
@@ -165,13 +171,13 @@ export const ListaCategories = () => {
             </div>
             <div className="Container">
             { page !== 1
-                ? <Button type="button" onClick={ () => getCategories(1)}>Primeira</Button>
+                ? <Button type="button" onClick={ () => getProducts(1)}>Primeira</Button>
                 : <Button type="button" disabled>Primeira</Button>
             }{" "}
             
             {/* antes da pagina que o usuario está */}
             { page !== 1
-                ? <Button type="button" onClick={ () => getCategories(page - 1)}>{page - 1}</Button>
+                ? <Button type="button" onClick={ () => getProducts(page - 1)}>{page - 1}</Button>
                 : ""
             }{" "}
 
@@ -180,17 +186,17 @@ export const ListaCategories = () => {
 
             {/* página depois da atual */}
             { page !== lastPage
-                ? <Button type="button" onClick={ () => getCategories(page + 1)}>{page + 1}</Button>
+                ? <Button type="button" onClick={ () => getProducts(page + 1)}>{page + 1}</Button>
                 : ""
             }{" "}
             {/* { page + 1 <= lastPage
-                ? <Button type="button" onClick={ () => getCategories(page + 1)}>{page + 1}</Button>
+                ? <Button type="button" onClick={ () => getProducts(page + 1)}>{page + 1}</Button>
                 : ""
             }{" "} */}
 
             {/* Ultima Página */}
             { page !== lastPage 
-                ? <Button type="button" onClick={ () => getCategories(lastPage)}>Ultima</Button>
+                ? <Button type="button" onClick={ () => getProducts(lastPage)}>Ultima</Button>
                 : <Button type="button" disabled>Ultima</Button>
             }
             </div>

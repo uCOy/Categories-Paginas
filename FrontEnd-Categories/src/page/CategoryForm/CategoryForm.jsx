@@ -143,6 +143,7 @@ export const CategoryForm = (props) => {
                 <Nav className="me-auto">
                   <Nav.Link href="/dashboard">Dashboard</Nav.Link>
                   <Nav.Link href="/category">Category</Nav.Link>
+                  <Nav.Link href="/products">Products</Nav.Link>
                 </Nav>
                 <Form>
                 <Button variant="outline-warning" type="button" onClick={handleLogout}>Sair</Button>

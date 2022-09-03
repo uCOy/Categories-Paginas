@@ -6,6 +6,8 @@ productsRoutes.get("/all", validarToken, products.findAll);
 
 productsRoutes.get("/show/:id", validarToken, products.findOne);
 
+productsRoutes.get("/all/pages/:page", validarToken, products.findAllPages);
+
 productsRoutes.post("/create", validarToken, products.create);
 
 productsRoutes.put("/update", validarToken, products.update);
