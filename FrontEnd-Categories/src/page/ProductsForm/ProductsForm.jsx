@@ -11,7 +11,6 @@ const initialValue = {
     quantity: 0,
     price: 0,
     categorieId: ''
-
 }
 
 export const ProductsForm = (props) => {
@@ -40,46 +39,6 @@ export const ProductsForm = (props) => {
         ...products,
         [e.target.name]: e.target.value
     })
-
-    useEffect(() => {
-
-        const getUser = async () => {
-            const headers = {
-                'headers': {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                },
-            }
-
-            await api.get("/user/" + id, headers)
-                .then((response) => {
-                    if (response.data.user) {
-                        // setproducts(response.data.user);
-                        setAcao('Editar');
-                    } else {
-                        setStatus({
-                            type: 'warning',
-                            mensagem: 'Usuário não encontrado!!!',
-                        })
-                    }
-                }).catch((err) => {
-                    if (err.response) {
-                        setStatus({
-                            type: 'error',
-                            mensagem: err.response.data.mensagem
-                        })
-                    } else {
-                        setStatus({
-                            type: 'error',
-                            mensagem: 'Erro: Tente mais tarde!'
-                        })
-                    }
-                })
-        }
-        // if (id) getUser();
-   
-
-    }, [])
 
     const getCategories = async () => {
         const headers = {
@@ -116,6 +75,47 @@ export const ProductsForm = (props) => {
     useEffect( () => {
         getCategories()
     },[])
+
+    useEffect( () => {
+        const getProducts = async () => {
+
+            const valueToken = localStorage.getItem('token');
+            const headers = {
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + valueToken
+                }
+            }
+
+            await api.get("/products/show/"+id, headers)
+                .then( (response) => {
+                    if(response.data.products){
+                      setProducts(response.data.products);
+                      setAcao('Editar')
+                    } else {
+                      setStatus({
+                        type: 'warning',
+                        mensagem:'Produto não encontrado!!!'
+                      })
+                    }
+                }).catch( (err) => {
+                    if(err.response){
+                        setStatus({
+                            type:'error',
+                            mensagem: err.response.data.mensagem
+                        })
+                    } else {
+                        setStatus({
+                            type:'error',
+                            mensagem: 'Erro: tente mais tarde.....!'
+                        })
+                    }
+                })
+        } 
+
+        if(id) getProducts();
+
+    },[id])
     
     
 
@@ -123,11 +123,12 @@ export const ProductsForm = (props) => {
         e.preventDefault();
         setStatus({ loading: true });
 
+        const valueToken = localStorage.getItem('token');
         const headers = {
             'headers': {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            },
+                'Authorization': 'Bearer ' + valueToken
+            }
         }
 
         if(!id){

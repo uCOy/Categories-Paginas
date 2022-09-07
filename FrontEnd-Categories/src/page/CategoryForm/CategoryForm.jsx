@@ -57,6 +57,7 @@ export const CategoryForm = (props) => {
                 } else {
                   setStatus({
                     type: 'warning',
+                    
                     mensagem:'Categorias não encontrada!!!'
                   })
                 } 

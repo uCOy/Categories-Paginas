@@ -133,7 +133,7 @@ export const ListaProducts = () => {
             <h1 className="userCenter">Produtos</h1>
 
             <div className="buttonDiv">
-                <Button className="buttonNew" variant="outline-success" href="/products/novo">Nova Produto</Button>{' '}
+                <Button className="buttonNew" variant="outline-success" href="/products/novo">Novo Produto</Button>{' '}
             </div>
             <div className="table">
                 <Table striped bordered hover>
@@ -157,7 +157,7 @@ export const ListaProducts = () => {
                             <td>{products.categorieId}</td>
                             <td className="spaceFlex">
                             <Button className="noLink" variant="outline-warning">
-                                <Link className="onLink" to={"/category/editar/"+products.id}>Editar</Link>
+                                <Link className="onLink" to={"/products/editar/"+products.id}>Editar</Link>
                             </Button>
                             <Button variant="outline-danger" onClick={() => confirmDelete(products)}>
                                 Excluir
