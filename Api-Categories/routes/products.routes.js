@@ -10,7 +10,7 @@ productsRoutes.get("/all/pages/:page", validarToken, products.findAllPages);
 
 productsRoutes.post("/create", validarToken, products.create);
 
-productsRoutes.put("/update", validarToken, products.update);
+productsRoutes.put("/update", products.update);
 
 productsRoutes.delete("/delete/:id", validarToken, products.delete);
 

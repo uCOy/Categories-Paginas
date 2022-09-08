@@ -6,6 +6,7 @@ import { Context } from '../../Context/AuthContext';
 
 
 const initialValue = {
+    id:'',
     name: '',
     description: '',
     quantity: 0,

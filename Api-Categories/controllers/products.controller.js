@@ -77,14 +77,13 @@ exports.findOne = async (req, res) => {
         //         mensagem: "Erro Nehum Produto encontrado!"
         //     })
         // }
-        const products = await Products.findAll({
-            where: {id: id},
+        const products = await Products.findByPk(id, {
             include:[Categories]
         });
         if(!products) {
             return res.status(400).json({
                 erro: true,
-                mensagem: "Erro Nehum Produto encontrado!"
+                mensagem: "Erro Nenhum Produto encontrado!"
             })
         }
         res.status(200).json({
@@ -121,9 +120,9 @@ exports.create = async (req, res) => {
 };
 
 exports.update = async (req, res) => {
-    const{ id} = req.body;
+    const{ id } = req.body;
 
-    await Products.update(req.body,{ where: { id}})
+    await Products.update(req.body,{ where: { id }})
     .then(()=>{
         return res.json({
             erro:false,
